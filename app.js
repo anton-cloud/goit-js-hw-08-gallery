@@ -82,9 +82,11 @@ const createGallatyItem = galleryItems.map(
     imgLiElem.setAttribute("alt", description);
     liElem.append(linkLiElem);
     linkLiElem.append(imgLiElem);
-    galleryRef.appendChild(liElem);
+    return liElem;
   }
 );
+
+galleryRef.append(...createGallatyItem);
 
 galleryRef.addEventListener("click", onOpenModal);
 function onOpenModal(e) {
@@ -93,15 +95,26 @@ function onOpenModal(e) {
   }
   e.preventDefault();
   modalRef.classList.add("is-open");
-  imageRef.src = e.target.dataset.source;
-  imageRef.alt = e.target.alt;
+
+  function updateAttr(src = "", alt = "") {
+    imageRef.src = src;
+    imageRef.alt = alt;
+  }
+
+  const t = e.target;
+
+  updateAttr(t.dataset.source, t.alt);
+
+  // console.log(imageRef.src);
+  // imageRef.src = e.target.dataset.source;
+  // imageRef.alt = e.target.alt;
 
   btnRef.addEventListener("click", closeOpenModal);
 
   function closeOpenModal(e) {
     modalRef.classList.remove("is-open");
-    console.log(imageRef.src);
-    imageRef.src = "";
-    console.log(imageRef.src);
+
+    updateAttr();
+    // console.log(imageRef.src);
   }
 }
